@@ -63,5 +63,49 @@ You MUST respond with a valid JSON object ONLY matching this exact structure:
   "recommendation": "One sentence summary recommendation."
 }
 `.trim();
+  },
+
+  research: (payload) => {
+    const { topic } = payload;
+    return `
+You are a elite social media research strategist and viral content creator.
+Analyze the target topic "${topic}" and generate high-converting research intelligence for short-form video content (Reels / TikTok / Shorts).
+
+Generate content trends, video ideas, high-performing reel examples, and a summary.
+
+OUTPUT FORMAT REQUIREMENTS:
+You MUST return a valid JSON object ONLY with the exact following schema:
+{
+  "trends": [
+    {
+      "topic": "Subtopic or Angle Title",
+      "whyTrending": "Clear reason why this subtopic is gaining traction right now",
+      "confidence": "High",
+      "suggestedAngle": "Specific visual or narrative hook strategy"
+    }
+  ],
+  "contentIdeas": [
+    {
+      "hook": "Exact opening hook sentence",
+      "format": "e.g., Problem / Solution, Listicle, POV, or Behind The Scenes",
+      "difficulty": "Easy",
+      "goal": "Target outcome (e.g. Maximize Saves, High Comments, Viral Reach)"
+    }
+  ],
+  "topReels": [
+    {
+      "title": "Title of winning reel concept",
+      "hookUsed": "Opening line or pattern interrupt used",
+      "whyItWorked": "Breakdown of the psychological retention mechanics"
+    }
+  ],
+  "summary": "A comprehensive 5-6 sentence summary analyzing the overall content landscape, audience expectations, and strategic recommendations for ${topic}."
+}
+
+Note:
+- "confidence" MUST be strictly one of: "High", "Medium", or "Low".
+- "difficulty" MUST be strictly one of: "Easy", "Medium", or "Hard".
+- Provide at least 3 trends, 3 content ideas, and 3 top reel examples.
+`.trim();
   }
 };
