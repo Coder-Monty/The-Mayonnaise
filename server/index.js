@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import predictRoutes from './routes/predict.routes.js';
 import researchRoutes from './routes/research.routes.js';
+import metricsRoutes from './routes/metrics.routes.js';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 // Routes
 app.use('/api/predict', predictRoutes);
 app.use('/api/research', researchRoutes);
+app.use('/api/metrics', metricsRoutes);
 
 // Health Check
 app.get('/api/ping', (req, res) => {
