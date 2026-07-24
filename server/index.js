@@ -5,6 +5,7 @@ import predictRoutes from './routes/predict.routes.js';
 import researchRoutes from './routes/research.routes.js';
 import metricsRoutes from './routes/metrics.routes.js';
 import reportsRoutes from './routes/reports.routes.js';
+import historyRoutes from './routes/history.routes.js';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use('/api/predict', predictRoutes);
 app.use('/api/research', researchRoutes);
 app.use('/api/metrics', metricsRoutes);
 app.use('/api/reports', reportsRoutes);
+app.use('/api/history', historyRoutes);
 
 // Health Check
 app.get('/api/ping', (req, res) => {
