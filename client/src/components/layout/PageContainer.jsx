@@ -1,4 +1,5 @@
 import React from 'react';
+import { ShieldAlert } from 'lucide-react';
 
 export default function PageContainer({ title, description, children, action }) {
   return (
@@ -13,10 +14,16 @@ export default function PageContainer({ title, description, children, action }) 
             {action && <div>{action}</div>}
           </div>
         )}
+        
         <main>{children}</main>
 
-        <footer className="pt-8 text-center text-xs text-[#6B7280] border-t border-[#E5E7EB]">
-          AI-assisted prediction, not a guaranteed performance promise
+        {/* Required Disclaimer Footer */}
+        <footer className="pt-8 text-center border-t border-[#E5E7EB] flex flex-col items-center justify-center gap-1 text-xs text-[#6B7280]">
+          <div className="flex items-center gap-1.5 font-medium text-[#6B7280]">
+            <ShieldAlert className="w-3.5 h-3.5 text-[#6FCB65]" />
+            <span>AI-assisted prediction, not a guaranteed performance promise</span>
+          </div>
+          <p className="text-[10px] text-[#6B7280]/70">Antigravity Solo Hackathon Build v2</p>
         </footer>
       </div>
     </div>

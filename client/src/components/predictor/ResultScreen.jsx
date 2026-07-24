@@ -5,7 +5,7 @@ import ScoreCard from '../shared/ScoreCard';
 import RecommendationBanner from '../shared/RecommendationBanner';
 import StrengthsWeaknessesList from '../shared/StrengthsWeaknessesList';
 import SuggestedEditsChecklist from '../shared/SuggestedEditsChecklist';
-import { Bookmark, Check } from 'lucide-react';
+import { Bookmark, Check, Info } from 'lucide-react';
 
 export default function PredictorResultScreen({ data = null, onSave = () => {}, isSaved = false }) {
   // Section 7 contract behavior: If data is null, render EmptyState ONLY
@@ -40,8 +40,9 @@ export default function PredictorResultScreen({ data = null, onSave = () => {}, 
               <h3 className="text-xl font-bold text-[#1F2937]">Publish Readiness</h3>
               <ReadinessBadge verdict={verdict} score={readinessScore} />
             </div>
-            <p className="text-xs text-[#6B7280]">
-              Visual and subtitle quality scores are heuristic estimates derived from script text cues.
+            <p className="text-xs text-[#6B7280] flex items-center justify-center md:justify-start gap-1">
+              <Info className="w-3.5 h-3.5 text-[#6FCB65] shrink-0" />
+              <span>AI-assisted prediction, not a guaranteed performance promise. Visual/subtitle quality estimated from script text cues.</span>
             </p>
           </div>
         </div>
