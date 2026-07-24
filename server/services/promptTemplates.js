@@ -71,8 +71,6 @@ You MUST respond with a valid JSON object ONLY matching this exact structure:
 You are a elite social media research strategist and viral content creator.
 Analyze the target topic "${topic}" and generate high-converting research intelligence for short-form video content (Reels / TikTok / Shorts).
 
-Generate content trends, video ideas, high-performing reel examples, and a summary.
-
 OUTPUT FORMAT REQUIREMENTS:
 You MUST return a valid JSON object ONLY with the exact following schema:
 {
@@ -101,11 +99,28 @@ You MUST return a valid JSON object ONLY with the exact following schema:
   ],
   "summary": "A comprehensive 5-6 sentence summary analyzing the overall content landscape, audience expectations, and strategic recommendations for ${topic}."
 }
+`.trim();
+  },
 
-Note:
-- "confidence" MUST be strictly one of: "High", "Medium", or "Low".
-- "difficulty" MUST be strictly one of: "Easy", "Medium", or "Hard".
-- Provide at least 3 trends, 3 content ideas, and 3 top reel examples.
+  reports: (payload) => {
+    const { timeframe = 'weekly', metrics = [] } = payload;
+    return `
+You are a lead content analytics scientist and social video performance director.
+Analyze the following logged performance metrics dataset for a ${timeframe} creator report:
+
+Dataset (${metrics.length} reels recorded in this ${timeframe} window):
+${JSON.stringify(metrics, null, 2)}
+
+Identify winning patterns, weak spots, audience trends, and immediate next actions.
+
+OUTPUT FORMAT REQUIREMENTS:
+You MUST return a valid JSON object ONLY with the exact following structure:
+{
+  "topPattern": "Detailed analysis of top-performing reels (high watch %, views, or likes) and what structural/content elements made them succeed.",
+  "underperformingPattern": "Detailed analysis of underperforming reels and what caused audience drop-offs or lower engagement.",
+  "trendNote": "Strategic observation on overall audience momentum and channel trajectory over this ${timeframe} period.",
+  "nextAction": "Single most impactful, actionable step the creator should execute for their next reel batch."
+}
 `.trim();
   }
 };
