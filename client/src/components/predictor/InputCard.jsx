@@ -1,5 +1,6 @@
 import React from 'react';
-import { Sparkles, Loader2, FileText, Tag, Video } from 'lucide-react';
+import { Sparkles, Loader2, FileText, Tag, Video, Upload } from 'lucide-react';
+import { useState } from 'react';
 
 export default function InputCard({
   script,
@@ -20,12 +21,52 @@ export default function InputCard({
     'General / Other'
   ];
 
+  const [n, setN] = useState(1);
+
   const handleSampleScript = () => {
-    setTitle('3 AI Tools to Save 10 Hours a Week');
-    setNiche('Tech & AI');
-    setScript(
-      `Stop wasting time doing manual task switching in 2026. Here are 3 AI tools that will save you 10+ hours every single week.\n\nTool #1: Notion AI for automatic meeting summaries.\nTool #2: Antigravity for automated code generation.\nTool #3: Midjourney v7 for instant graphic design.\n\nWhich one will you try first? Comment 'AI' below and I'll send you the direct access links!`
-    );
+    // n++;
+    // alert(n);
+    if (n == 1) {
+      setN(2);
+      setTitle('3 AI Tools to Save 10 Hours a Week');
+      setNiche('Tech & AI');
+      setScript(
+        `Stop wasting time doing manual task switching in 2026. Here are 3 AI tools that will save you 10+ hours every single week.\n\nTool #1: Notion AI for automatic meeting summaries.\nTool #2: Antigravity for automated code generation.\nTool #3: Midjourney v7 for instant graphic design.\n\nWhich one will you try first? Comment 'AI' below and I'll send you the direct access links!`
+      );
+    } else if (n == 2) {
+      setN(3);
+      setTitle('2 Side Hustles You Can Start This Weekend');
+      setNiche('Business & Finance');
+      setScript(
+        `Looking to earn extra income without quitting your job? Here are 3 side hustles you can start this weekend.
+
+Side Hustle #1: Sell digital templates on Etsy.
+Side Hustle #2: Start a faceless YouTube Shorts channel.
+
+The best part? You can start each of these with little to no upfront investment.
+
+Which one would you try first? Comment 'START' below and I'll share more ideas!`
+      );
+    }
+    else if (n == 3) {
+      setN(1);
+      setTitle('5 Video Games With Plot Twists Nobody Saw Coming');
+      setNiche('Entertainment & Gaming');
+      setScript(
+        `Think you've seen every crazy game ending? Think again.
+
+Game #1: BioShock – The unforgettable "Would you kindly..." twist.
+Game #2: Red Dead Redemption 2 – An emotional ending that changed everything.
+Game #3: NieR: Automata – Every new ending completely changes the story.
+Game #4: Minecraft was originally called "Cave Game."
+Game #5: The PlayStation 2 is still the best-selling console of all time."
+
+If you haven't played these yet, avoid spoilers at all costs!
+
+Which game had the biggest plot twist? Comment your favorite below!`
+      );
+    }
+
   };
 
   return (
@@ -35,13 +76,31 @@ export default function InputCard({
           <FileText className="w-5 h-5 text-[#6FCB65]" />
           <h2 className="text-base font-bold text-[#1F2937]">Script Input</h2>
         </div>
-        <button
-          type="button"
-          onClick={handleSampleScript}
-          className="text-xs font-semibold text-[#6B7280] hover:text-[#1F2937] underline cursor-pointer"
-        >
-          Insert Sample Script
-        </button>
+        <div className="flex items-center gap-3">
+          <div className="relative group inline-flex items-center">
+            <button
+              type="button"
+              title="Coming soon using transcript for demo"
+              className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold text-[#4B5563] bg-gray-100 hover:bg-gray-200 border border-[#E5E7EB] rounded-lg transition-all cursor-pointer"
+            >
+              <Upload className="w-3.5 h-3.5 text-[#6B7280]" />
+              <span>Upload Video</span>
+            </button>
+            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover:flex flex-col items-center pointer-events-none z-20">
+              <span className="bg-gray-900 text-white text-[11px] font-medium px-2.5 py-1 rounded-md shadow-lg whitespace-nowrap">
+                Coming soon using transcript for demo
+              </span>
+              <div className="w-2 h-2 -mt-1 bg-gray-900 rotate-45"></div>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={handleSampleScript}
+            className="text-xs font-semibold text-[#6B7280] hover:text-[#1F2937] underline cursor-pointer"
+          >
+            Insert Sample Script
+          </button>
+        </div>
       </div>
 
       <div className="space-y-4">
@@ -103,11 +162,10 @@ export default function InputCard({
           type="button"
           onClick={onPredict}
           disabled={loading || !script.trim()}
-          className={`w-full py-3 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-md ${
-            loading || !script.trim()
-              ? 'bg-gray-200 text-gray-400 cursor-not-allowed shadow-none'
-              : 'bg-[#A8E6A1] text-[#1F2937] hover:bg-[#6FCB65] active:scale-[0.99] cursor-pointer'
-          }`}
+          className={`w-full py-3 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-md ${loading || !script.trim()
+            ? 'bg-gray-200 text-gray-400 cursor-not-allowed shadow-none'
+            : 'bg-[#A8E6A1] text-[#1F2937] hover:bg-[#6FCB65] active:scale-[0.99] cursor-pointer'
+            }`}
         >
           {loading ? (
             <>

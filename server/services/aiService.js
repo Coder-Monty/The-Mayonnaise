@@ -1,5 +1,8 @@
 import { GoogleGenAI } from '@google/genai';
+import dotenv from 'dotenv';
 import { promptTemplates } from './promptTemplates.js';
+
+dotenv.config();
 
 /**
  * Clean response text to extract valid JSON string.
@@ -51,29 +54,40 @@ export async function callGemini(promptType, payload = {}) {
     promptText = JSON.stringify(payload);
   }
 
-  try {
-    if (!apiKey) {
-      console.warn(`[aiService] GEMINI_API_KEY is not set. Using fallback shape for promptType: ${promptType}`);
-      return getFallbackResponse(promptType, payload);
-    }
-
-    const ai = new GoogleGenAI({ apiKey });
-    
-    // Call Gemini enforcing JSON response
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: promptText,
-      config: {
-        responseMimeType: 'application/json',
-      }
-    });
-
-    const text = response.text;
-    const jsonString = cleanJsonResponse(text);
-    const parsed = JSON.parse(jsonString);
-    return parsed;
-  } catch (error) {
-    console.error(`[aiService] Error during Gemini API call [promptType: ${promptType}]:`, error.message);
-    return getFallbackResponse(promptType, payload, error.message);
+  if (!apiKey) {
+    console.warn(`[aiService] GEMINI_API_KEY is not set. Using fallback shape for promptType: ${promptType}`);
+    return getFallbackResponse(promptType, payload);
   }
+
+  const ai = new GoogleGenAI({ apiKey });
+  const candidateModels = [
+    process.env.GEMINI_MODEL || 'gemini-2.0-flash',
+    'gemini-2.0-flash'
+  ];
+  // Remove duplicates
+  const modelsToTry = [...new Set(candidateModels)];
+
+  let lastError = null;
+  for (const modelName of modelsToTry) {
+    try {
+      const response = await ai.models.generateContent({
+        model: modelName,
+        contents: promptText,
+        config: {
+          responseMimeType: 'application/json',
+        }
+      });
+
+      const text = response.text;
+      const jsonString = cleanJsonResponse(text);
+      const parsed = JSON.parse(jsonString);
+      return parsed;
+    } catch (error) {
+      lastError = error;
+      console.warn(`[aiService] Gemini call failed for model ${modelName}:`, error.message);
+    }
+  }
+
+  console.error(`[aiService] All models failed during Gemini API call [promptType: ${promptType}]:`, lastError?.message);
+  return getFallbackResponse(promptType, payload, lastError?.message);
 }

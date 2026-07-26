@@ -23,7 +23,6 @@ export default function PageContainer({ title, description, children, action }) 
             <ShieldAlert className="w-3.5 h-3.5 text-[#6FCB65]" />
             <span>AI-assisted prediction, not a guaranteed performance promise</span>
           </div>
-          <p className="text-[10px] text-[#6B7280]/70">Antigravity Solo Hackathon Build v2</p>
         </footer>
       </div>
     </div>

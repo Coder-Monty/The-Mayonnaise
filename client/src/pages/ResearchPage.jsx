@@ -7,8 +7,10 @@ import TopReelsList from '../components/research/TopReelsList';
 import EmptyState from '../components/shared/EmptyState';
 import LoadingState from '../components/shared/LoadingState';
 import { Search, Sparkles, AlertCircle } from 'lucide-react';
+import { useResultContext } from '../context/ResultContext';
 
 export default function ResearchPage() {
+  const { setLatestResearchResult } = useResultContext();
   const [topic, setTopic] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -19,7 +21,6 @@ export default function ResearchPage() {
   const handleGenerate = async () => {
     if (!topic.trim()) return;
 
-    setLoading(false);
     setLoading(true);
     setError(null);
 
@@ -39,6 +40,7 @@ export default function ResearchPage() {
 
       const data = await response.json();
       setResearchData(data);
+      setLatestResearchResult(data);
     } catch (err) {
       console.error('Research API error:', err);
       setError(err.message || 'Failed to generate content research. Please try again.');

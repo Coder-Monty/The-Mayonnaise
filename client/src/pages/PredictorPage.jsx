@@ -4,8 +4,10 @@ import InputCard from '../components/predictor/InputCard';
 import PredictorResultScreen from '../components/predictor/ResultScreen';
 import LoadingState from '../components/shared/LoadingState';
 import { AlertCircle } from 'lucide-react';
+import { useResultContext } from '../context/ResultContext';
 
 export default function PredictorPage() {
+  const { setLatestPredictorResult } = useResultContext();
   const [script, setScript] = useState('');
   const [title, setTitle] = useState('');
   const [niche, setNiche] = useState('Tech & AI');
@@ -40,6 +42,7 @@ export default function PredictorPage() {
 
       const data = await response.json();
       setResultData(data);
+      setLatestPredictorResult(data);
     } catch (err) {
       console.error('Predict API error:', err);
       setError(err.message || 'Failed to generate reel prediction analysis. Please try again.');
@@ -70,7 +73,7 @@ export default function PredictorPage() {
 
   return (
     <PageContainer
-      title="AI Pre-Publish Reel Reviewer"
+      title="Predict Your Reel's Performance"
       description="Evaluate short-form video scripts against algorithmic engagement factors before publishing."
     >
       <div className="space-y-8">

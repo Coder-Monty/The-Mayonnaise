@@ -40,3 +40,16 @@ export function validateMetricsInput(body) {
 
   return { valid: true };
 }
+
+export function validateChatInput(body) {
+  if (!body || typeof body !== 'object') {
+    return { valid: false, message: 'Request body must be a valid JSON object' };
+  }
+
+  const { message } = body;
+  if (!message || typeof message !== 'string' || message.trim().length === 0) {
+    return { valid: false, message: 'Field "message" is required and cannot be empty' };
+  }
+
+  return { valid: true };
+}

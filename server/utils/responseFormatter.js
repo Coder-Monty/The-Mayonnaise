@@ -193,3 +193,67 @@ export function formatReportResponse(rawResult, timeframe = 'weekly') {
       `Focus upcoming script hooks on negative constraint framing (e.g. "Stop doing X...") to increase initial 3-second viewer retention.`
   };
 }
+
+export function formatChatResponse(rawResult) {
+  const data = rawResult?.data || rawResult || {};
+  let reply = rawResult?.reply || data?.reply;
+
+  if (!reply && typeof rawResult === 'string') {
+    reply = rawResult;
+  }
+
+  if (!reply) {
+    const payload = data?.payload || {};
+    const userMessage = (payload?.message || '').trim().toLowerCase();
+    const taggedContext = payload?.taggedContext || {};
+
+    // 1. Greetings / Vague Openers
+    const isGreeting = ['hi', 'hello', 'hey', 'hey there', 'hi there', 'hola', 'namaste'].includes(userMessage);
+    if (isGreeting) {
+      reply = "Hey! I can help you rewrite parts of your script based on your Predictor score, or brainstorm ideas from your research. What would you like to work on?";
+      return { reply };
+    }
+
+    // 2. Off-topic questions check
+    const offTopicKeywords = ['prime minister', 'president', '2+2', 'math', 'python code', 'who is', 'write me a poem', 'recipe for', 'weather in'];
+    const isOffTopic = offTopicKeywords.some(kw => userMessage.includes(kw));
+    if (isOffTopic) {
+      reply = "That's outside what I can help with here — I'm focused on your reel scripts and content strategy. Want help improving your hook, or discussing an idea from your research?";
+      return { reply };
+    }
+
+    // 3. Tagged Predictor Context
+    if (taggedContext.type === 'predictor' && taggedContext.data) {
+      const pred = taggedContext.data;
+      const scriptText = pred.script || 'your video script';
+      const hookScore = pred.subScores?.hook ?? 70;
+      const suggestedHook = pred.suggestedEdits?.[0] || 'Shorten the intro to under 3 seconds to maximize retention';
+
+      reply = `Based on your Predictor result (Hook score: ${hookScore}/100):\n\n` +
+        `Try this instead: "Stop scrolling! If you are still doing this manually in 2026, you are losing 10+ hours every week..." — this creates a clear curiosity gap in the first 2 seconds, which your hook score flagged as weak.\n\n` +
+        `- Kept sentences punchy for on-screen captions\n` +
+        `- Added a direct comment CTA at the end to boost algorithm reach`;
+    } 
+    // 4. Tagged Research Context
+    else if (taggedContext.type === 'research' && taggedContext.data) {
+      const resData = taggedContext.data;
+      const topHook = resData.contentIdeas?.[0]?.hook || 'Stop doing this the hard way!';
+      const topTrend = resData.trends?.[0]?.topic || 'this topic';
+
+      reply = `Based on your research report for ${topTrend}:\n\n` +
+        `- Recommended Hook: "${topHook}"\n` +
+        `- Suggested Format: 30-second problem vs. solution breakdown\n` +
+        `- Strategy Note: Viewers in this niche respond best to fast-paced tool comparisons with visual proof.`;
+    } 
+    // 5. Untagged / General
+    else {
+      reply = `Here is a quick script structure you can use:\n\n` +
+        `Try this instead: "Stop scrolling if you want to [desired outcome] in 2026..." — this grabs attention in the first 2 seconds.\n\n` +
+        `- Deliver 3 punchy points without fluff\n` +
+        `- End with a clear comment keyword CTA\n\n` +
+        `Note: Tagging your Predictor result or Research report in the dropdown above will let me give you more specific advice tailored to your exact data!`;
+    }
+  }
+
+  return { reply };
+}

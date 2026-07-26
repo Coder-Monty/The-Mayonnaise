@@ -1,13 +1,15 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Sparkles, BarChart3, Search, History } from 'lucide-react';
+import Mayo from './mayo_labs2.png';
+import ChatToggleButton from '../chat/ChatToggleButton';
 
 export default function Navbar() {
   const navItems = [
-    { path: '/predictor', label: 'Reel Reviewer', icon: Sparkles },
-    { path: '/research', label: 'AI Research', icon: Search },
-    { path: '/reports', label: 'Performance Reports', icon: BarChart3 },
-    { path: '/history', label: 'History', icon: History },
+    { path: '/predictor', label: 'Cheesy Reviewer', icon: Sparkles },
+    { path: '/research', label: 'Idea Salad', icon: Search },
+    { path: '/reports', label: 'Mayo Metrics', icon: BarChart3 },
+    { path: '/history', label: 'Recipe Book', icon: History },
   ];
 
   return (
@@ -17,35 +19,41 @@ export default function Navbar() {
           {/* Brand Logo */}
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-[#A8E6A1] flex items-center justify-center text-[#1F2937] font-bold text-xl shadow-sm">
-              ⚡
+              {/* ⚡ */}
+              <img src={Mayo} alt="" />
             </div>
             <div>
-              <span className="text-xl font-bold text-[#1F2937] tracking-tight">Content Intelligence</span>
-              <span className="ml-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-[#A8E6A1]/40 text-[#1F2937]">v2</span>
+              <span className="text-xl font-bold text-[#1F2937] tracking-tight">Mayo labs</span>
+              {/* <span className="ml-2 text-xs font-semibold px-2 py-0.5 rounded-full bg-[#A8E6A1]/40 text-[#1F2937]">v2</span> */}
             </div>
           </div>
 
-          {/* Navigation Links */}
-          <nav className="flex items-center space-x-1 sm:space-x-2">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  className={({ isActive }) =>
-                    `flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 ${
-                      isActive
-                        ? 'bg-[#A8E6A1] text-[#1F2937] font-semibold shadow-xs'
-                        : 'text-[#6B7280] hover:text-[#1F2937] hover:bg-gray-100'
-                    }`
-                  }
-                >
-                  <Icon className="w-4 h-4" />
-                  <span>{item.label}</span>
-                </NavLink>
-              );
-            })}
+          {/* Navigation Links & Chat Button */}
+          <nav className="flex items-center">
+            <div className="flex items-center space-x-1 sm:space-x-2">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <NavLink
+                    key={item.path}
+                    to={item.path}
+                    className={({ isActive }) =>
+                      `flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 ${
+                        isActive
+                          ? 'bg-[#A8E6A1] text-[#1F2937] font-semibold shadow-xs'
+                          : 'text-[#6B7280] hover:text-[#1F2937] hover:bg-gray-100'
+                      }`
+                    }
+                  >
+                    <Icon className="w-4 h-4" />
+                    <span>{item.label}</span>
+                  </NavLink>
+                );
+              })}
+            </div>
+            <div className="ml-3 sm:ml-4 flex items-center shrink-0">
+              <ChatToggleButton />
+            </div>
           </nav>
         </div>
       </div>

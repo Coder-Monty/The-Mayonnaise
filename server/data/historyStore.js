@@ -84,3 +84,15 @@ export function saveHistory(record) {
   historyRecords.unshift(newRecord);
   return newRecord;
 }
+
+export function deleteHistory(id) {
+  const initialLength = historyRecords.length;
+  historyRecords = historyRecords.filter(item => item.id !== id);
+  return historyRecords.length < initialLength;
+}
+
+export function clearAllHistory() {
+  historyRecords = [];
+  return true;
+}
+

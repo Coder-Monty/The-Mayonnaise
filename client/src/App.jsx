@@ -5,23 +5,28 @@ import PredictorPage from './pages/PredictorPage';
 import ResearchPage from './pages/ResearchPage';
 import ReportsPage from './pages/ReportsPage';
 import HistoryPage from './pages/HistoryPage';
+import { ResultProvider } from './context/ResultContext';
+import ChatPanel from './components/chat/ChatPanel';
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <div className="min-h-screen flex flex-col bg-[#F9FAFB]">
-        <Navbar />
-        <div className="flex-1">
-          <Routes>
-            <Route path="/" element={<Navigate to="/predictor" replace />} />
-            <Route path="/predictor" element={<PredictorPage />} />
-            <Route path="/research" element={<ResearchPage />} />
-            <Route path="/reports" element={<ReportsPage />} />
-            <Route path="/history" element={<HistoryPage />} />
-            <Route path="*" element={<Navigate to="/predictor" replace />} />
-          </Routes>
+    <ResultProvider>
+      <BrowserRouter>
+        <div className="min-h-screen flex flex-col bg-[#F9FAFB]">
+          <Navbar />
+          <div className="flex-1">
+            <Routes>
+              <Route path="/" element={<Navigate to="/predictor" replace />} />
+              <Route path="/predictor" element={<PredictorPage />} />
+              <Route path="/research" element={<ResearchPage />} />
+              <Route path="/reports" element={<ReportsPage />} />
+              <Route path="/history" element={<HistoryPage />} />
+              <Route path="*" element={<Navigate to="/predictor" replace />} />
+            </Routes>
+          </div>
+          <ChatPanel />
         </div>
-      </div>
-    </BrowserRouter>
+      </BrowserRouter>
+    </ResultProvider>
   );
 }
